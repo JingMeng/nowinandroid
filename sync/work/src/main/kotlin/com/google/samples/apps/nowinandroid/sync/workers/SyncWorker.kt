@@ -69,6 +69,7 @@ internal class SyncWorker @AssistedInject constructor(
 
             syncSubscriber.subscribe()
 
+            //这个是hilt注入，不要愣神
             // First sync the repositories in parallel
             val syncedSuccessfully = awaitAll(
                 async { topicRepository.sync() },

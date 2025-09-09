@@ -29,6 +29,8 @@ import javax.inject.Inject
 
 /**
  * [Application] class for NiA
+ *
+ * https://deepwiki.com/android/nowinandroid
  */
 @HiltAndroidApp
 class NiaApplication : Application(), ImageLoaderFactory {
