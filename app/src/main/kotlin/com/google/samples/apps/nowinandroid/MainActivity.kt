@@ -76,6 +76,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // androidx.core.splashscreen
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
@@ -89,6 +90,7 @@ class MainActivity : ComponentActivity() {
             ),
         )
 
+        //深色主题的处理，不知道为什么要单独处理深色主题
         // Update the uiState
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -127,12 +129,16 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        //这个是一个好东西，动态简单ui状态
         // Keep the splash screen on-screen until the UI state is loaded. This condition is
         // evaluated each time the app needs to be redrawn so it should be fast to avoid blocking
         // the UI.
         splashScreen.setKeepOnScreenCondition { viewModel.uiState.value.shouldKeepSplashScreen() }
 
+        //setContentView
         setContent {
+
+            //ViewModel 全局的，需要学习 remember 这个作用
             val appState = rememberNiaAppState(
                 networkMonitor = networkMonitor,
                 userNewsResourceRepository = userNewsResourceRepository,
@@ -141,15 +147,18 @@ class MainActivity : ComponentActivity() {
 
             val currentTimeZone by appState.currentTimeZone.collectAsStateWithLifecycle()
 
+            //Compose 的依赖注入机制，用来给下面的 UI 层提供一些全局对象。
             CompositionLocalProvider(
                 LocalAnalyticsHelper provides analyticsHelper,
                 LocalTimeZone provides currentTimeZone,
             ) {
+                //主题
                 NiaTheme(
                     darkTheme = themeSettings.darkTheme,
                     androidTheme = themeSettings.androidTheme,
                     disableDynamicTheming = themeSettings.disableDynamicTheming,
                 ) {
+                    //这个是入口
                     NiaApp(appState)
                 }
             }

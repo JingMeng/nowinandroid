@@ -26,6 +26,8 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * DAO for [TopicEntity] access
+ * 这就是第二个数据库了，真好
+ *
  */
 @Dao
 interface TopicDao {
